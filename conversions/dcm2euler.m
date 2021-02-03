@@ -30,7 +30,7 @@ function euler = dcm2euler(DCMbn)
 % Inertial Navigation Technology (2nd Ed.). Institution
 % of Engineering and Technology, USA. Eq. 11.4. Eq. 3.66, p. 46.
 %
-%		R. Gonzalez, J. Giribet, and H.D. Patiño,. An approach to
+%   R. Gonzalez, J. Giribet, and H.D. Patiño,. An approach to
 % benchmarking of loosely coupled low-cost navigation systems,
 % Mathematical and Computer Modelling of Dynamical Systems, vol. 21,
 % issue 2, pp. 272-287. Eq. 15.
@@ -40,9 +40,9 @@ function euler = dcm2euler(DCMbn)
 % Author:  Rodrigo Gonzalez <rodralez@frm.utn.edu.ar>
 % URL:     https://github.com/rodralez/navego
 
-phi   =  atan( DCMbn(3,2) ./ DCMbn(3,3) ); % roll
+phi   =  atan( DCMbn(3,2) ./ DCMbn(3,3) );  % roll
 theta = -asin( DCMbn(3,1) );                % pitch
-psi   =  atan2( DCMbn(2,1), DCMbn(1,1) );  % yaw
+psi   =  atan2( DCMbn(2,1), DCMbn(1,1) );   % yaw
 
 euler = [phi theta psi];
 

@@ -1,9 +1,9 @@
 % navego_example_real_ekinox: post-processing integration of MPU-6000 
 % IMU and Ekinox GNSS data.
 %
-% Main goal: to integrate MPU-6000 IMU and Ekinox-D GNSS measurements.
+% The main goal is to integrate MPU-6000 IMU and Ekinox-D GNSS measurements.
 %
-% Sensors dataset was generated driving a vehicle through the streets of 
+% Sensors dataset was generated driving a car through the streets of 
 % Turin city (Italy).
 %
 %   Copyright (C) 2014, Rodrigo Gonzalez, all rights reserved.
@@ -24,31 +24,37 @@
 %   License along with this program. If not, see
 %   <http://www.gnu.org/licenses/>.
 %
-% Reference:
+% References:
 %
 %   SBG Systems. SBG Ekinox-D High Accuracy Inertial System Brochure, 
 % Tactical grade MEMS Inertial Systems, v1.0. February 2014. 
+%
+%   InvenSense Inc. MPU-6000/MPU-6050 Product Specification. Document  
+% Number: PS-MPU-6000A-00. Revision: 3.4. Release Date: 08/19/2013.
 %
 %   R. Gonzalez and P. Dabove. Performance Assessment of an Ultra Low-Cost 
 % Inertial Measurement Unit for Ground Vehicle Navigation. Sensors 2019,  
 % 19(18). https://www.mdpi.com/530156.
 %
-% Version: 001
-% Date:    2019/09/09
+% Version: 004
+% Date:    2020/11/23
 % Author:  Rodrigo Gonzalez <rodralez@frm.utn.edu.ar>
 % URL:     https://github.com/rodralez/navego
 
-% NOTE: NaveGo assumes that IMU is aligned with respect to body-frame as 
+% NOTE: NaveGo assumes that IMU is aligned with respect to body-frame as
 % X-forward, Y-right, and Z-down.
+%
+% NOTE: NaveGo assumes that yaw angle (heading) is positive clockwise.
 
 clc
 close all
 clear
 matlabrc
 
-addpath ../../.
-addpath ../../simulation/
+addpath ../../ins/
+addpath ../../ins-gnss/
 addpath ../../conversions/
+addpath ../../performance_analysis/
 
 versionstr = 'NaveGo, release v1.2';
 
@@ -87,17 +93,21 @@ fprintf('NaveGo: loading reference data... \n')
 
 load ref
 
-%% EKINOX IMU 
+%% MPU-6000 IMU 
 
 fprintf('NaveGo: loading MPU-6000 IMU data... \n')
 
 load mpu6000_imu
+
+mpu6000_imu.ab_sta = mpu6000_imu.ab_sta - [0 0 G];
 
 %% EKINOX GNSS 
 
 fprintf('NaveGo: loading Ekinox GNSS data... \n')
 
 load ekinox_gnss
+
+% ekinox_gnss.eps = mean(diff(mpu6000_imu.t)) / 2; %  A rule of thumb for choosing eps.
 
 %% Print navigation time
 
@@ -113,17 +123,22 @@ if strcmp(INS_GNSS, 'ON')
     
     % Execute INS/GPS integration
     % ---------------------------------------------------------------------
-    nav_mpu6000 = ins_gnss(mpu6000_imu, ekinox_gnss, 'quaternion'); %
+    nav_mpu6000 = ins_gnss(mpu6000_imu, ekinox_gnss, 'quaternion'); % dcm
     % ---------------------------------------------------------------------
     
-    save nav_mpu6000.mat nav_mpu6000
-    
+    save nav_mpu6000.mat nav_mpu6000    
 else
     
     load nav_mpu6000
 end
 
-%% ANALYZE PERFORMANCE FOR A CERTAIN PART OF THE INS/GNSS DATASET
+%% Printing traveled distance
+
+distance = gnss_distance (nav_mpu6000.lat, nav_mpu6000.lon);
+
+fprintf('NaveGo: distance traveled by the vehicle is %.2f meters or %.2f km. \n', distance, distance/1000)
+
+%% ANALYSIS OF PERFORMANCE FOR A CERTAIN PART OF THE INS/GNSS DATASET
 
 tmin_rmse = ref.t(1); 
 tmax_rmse = ref.t(end); 
@@ -144,25 +159,19 @@ ref.lon     = ref.lon  (idx:fdx);
 ref.h       = ref.h    (idx:fdx);
 ref.vel     = ref.vel  (idx:fdx, :);
 
-%% Interpolate INS/GNSS dataset 
+%% Interpolation of INS/GNSS dataset 
 
 % INS/GNSS estimates and GNSS data are interpolated according to the
 % reference dataset.
 
-[nav_r,  ref_n] = navego_interpolation (nav_mpu6000, ref);
-[gnss_r, ref_g] = navego_interpolation (ekinox_gnss, ref);
-
-%% Print navigation time
-
-to = (ref.t(end) - ref.t(1));
-
-fprintf('NaveGo: navigation time under analysis is %.2f minutes or %.2f seconds. \n', (to/60), to)
+[nav_i,  ref_n] = navego_interpolation (nav_mpu6000, ref);
+[gnss_i, ref_g] = navego_interpolation (ekinox_gnss, ref);
 
 %% Print RMSE from INS/GNSS data
 
-rmse_v = print_rmse (nav_r, gnss_r, ref_n, ref_g, 'Ekinox INS/GNSS');
+rmse_v = print_rmse (nav_i, gnss_i, ref_n, ref_g, 'MPU-6000 INS/GNSS');
 
-%% Save RMSE to CVS file
+%% Saving RMSE to CVS file
 
 csvwrite('ekinox.csv', rmse_v);
 
@@ -170,5 +179,12 @@ csvwrite('ekinox.csv', rmse_v);
 
 if (strcmp(PLOT,'ON'))
     
-   navego_plot (ref, ekinox_gnss, nav_mpu6000, gnss_r, nav_r, ref_g, ref_n)
+   navego_plot (ref, ekinox_gnss, nav_mpu6000, gnss_i, nav_i, ref_g, ref_n)
 end
+
+%% Performance analysis of the Kalman filter
+
+fprintf('\nNaveGo: Kalman filter performance analysis...\n') 
+
+kf_analysis (nav_mpu6000)
+

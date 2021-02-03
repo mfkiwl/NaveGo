@@ -4,11 +4,18 @@
 
 NaveGo: an open-source MATLAB/GNU-Octave toolbox for processing integrated navigation systems and performing inertial sensors profiling analysis.
 
-NaveGo is an open-source MATLAB/GNU Octave toolbox for processing integrated navigation systems and simulating inertial sensors and a GNSS receiver. It also performs inertial sensors analysis using the Allan variance. It is freely available online. It is developed under MATLAB/GNU-Octave due to this programming language has become a *de facto* standard for simulation and mathematical computing. 
+NaveGo (ˈnævəˈgəʊ) is an open-source MATLAB/GNU Octave toolbox for processing integrated navigation systems and simulating inertial sensors and a GNSS receiver. It also performs inertial sensors analysis using the Allan variance. It is freely available online. It is developed under MATLAB/GNU-Octave due to this programming language has become a *de facto* standard for simulation and mathematical computing.
 
 NaveGo's motto is "to bring integrated navigation to the masses".
 
-NaveGo is supported at the moment by three academic research groups: GridTics at the National University of Technology (Argentina), Engineering School at the National University of Cuyo (Argentina), and DIATI at the Politecnico di Torino (Italy). 
+NaveGo is supported at the moment by three academic research groups: GridTics at the National University of Technology (Argentina), Engineering School at the National University of Cuyo (Argentina), and DIATI at the Politecnico di Torino (Italy).
+
+## Attention!
+
+Please, if you find a bug or error in NaveGo's code, you should open a new [issue](https://github.com/rodralez/NaveGo/issues). 
+
+But, if you have any question of any kind or you want to share some feedback about NaveGo, you have to use NaveGo's [discussion forum](https://github.com/rodralez/NaveGo/discussions).  
+
 
 ## Features
 
@@ -27,7 +34,7 @@ Main features of NaveGo are:
 
 ## NaveGo Mathematical Model
 
-The underlying mathematical model of NaveGo is based on two articles: 
+The underlying mathematical model of NaveGo is based on the two following articles:
 
 * R. Gonzalez, J.I. Giribet, and H.D. Patiño. NaveGo: a simulation framework for low-cost integrated navigation systems, Journal of Control Engineering and Applied Informatics, vol. 17, issue 2, pp. 110-120, 2015. [Download](http://ceai.srait.ro/index.php?journal=ceai&page=article&op=view&path%5B%5D=2478).
 
@@ -36,9 +43,9 @@ The underlying mathematical model of NaveGo is based on two articles:
 Be aware that the original Kalman filter state vector has been reduced from 21 to 15 states.
 
 
-##  NaveGo Model Validation
+##  NaveGo Model Validation
 
-NaveGo has been validated by processing real-world data from a real trajectory and contrasting results against Inertial Explorer, a commercial, closed-source software package. Difference between both solutions have shown to be negligible. For more information read the following paper,
+NaveGo has been validated by processing real-world data from a real trajectory and contrasting results against Inertial Explorer, a commercial, closed-source software package. Differences between both solutions have shown to be negligible. For more information read the following paper:
 
 * R. Gonzalez, C.A. Catania, P. Dabove, J.C. Taffernaberry, and M. Piras. Model validation of an open-source framework for post-processing INS/GNSS systems. III International Conference on Geographical Information Systems Theory, Applications and Management (GISTAM 2017). Porto, Portugal. April 2017. [Download](https://www.scitepress.org/PublicationsDetail.aspx?ID=Ds7NC2qnRSw%3d&t=1).
 
@@ -47,20 +54,20 @@ NaveGo has been validated by processing real-world data from a real trajectory a
 
 Future features of NaveGo will be:
 
-* Tightly-coupled INS/GNSS. 
+* Compass heading using magnetometers.
+
+* Barometer as aiding sensor for altitude.
+
+* Tightly-coupled INS/GNSS integration.
 
 * RTS smoother.
 
 * Adaptive Kalman filter.
 
-* Unscented Kalman filter.
 
-* KML file generator.
+# Please, cite our work!
 
-
-## Please, cite our work!
-
-If you are using NaveGo in your research, we gently ask you to add the following two cites to your future papers:
+If you are using NaveGo in your research, we kindly ask you to add the following two cites to your future papers:
 
 * R. Gonzalez, C.A. Catania, P. Dabove, J.C. Taffernaberry, and M. Piras. Model validation of an open-source framework for post-processing INS/GNSS systems. III International Conference on Geographical Information Systems Theory, Applications and Management (GISTAM 2017). Porto, Portugal. April 2017. [Download](https://www.scitepress.org/PublicationsDetail.aspx?ID=Ds7NC2qnRSw%3d&t=1).
 
@@ -71,472 +78,104 @@ An URL to NaveGo should be provided as the following cite:
 R. Gonzalez, C. Catania, and P. Dabove. NaveGo: An Open-Source MATLAB/GNU-Octave Toolbox for Processing Integrated Navigation Systems and Performing Inertial Sensors Profiling Analysis. Version 1.2. URL: https://github.com/rodralez/NaveGo. DOI: 10.5281/zenodo.2536950. January 2019.
 
 
-## Contributions
+# Donations
 
-We are looking for contributors to NaveGo! Since integrated navigation is a topic used in several fields as Geomatics, Geology, Mobile Mapping, Autonomous Driving, and even Veterinary (yes, Veterinary!) for animal tracking, we hope other communities other than the navigation community compromise and contribute to this open-source project.
+Your donation helps us to improve NaveGo. You can make a donation to support our work using:
 
-You can contribute in many ways: 
+* PAYPAL: [paypal.me/supportnavego](https://www.paypal.com/paypalme/supportnavego).
 
-* Writing code. 
-* Writing a manual. 
+* BITCOIN public key: 13fgM1MmyPc1nnVj5HTdvj2x7J1BoZTdvx	
+
+
+# Contributions
+
+We are looking for contributors to NaveGo! Since integrated navigation is a topic used in several fields such as Geomatics, Geology, Mobile Mapping, Autonomous Driving, and even Veterinary (yes, Veterinary!) for animal tracking, we hope other communities other than the navigation community compromise and contribute to this open-source project.
+
+You can contribute in many ways:
+
+* Writing code.
+* Writing a manual.
 * Reporting bugs.
 * Suggesting new features.
 
-If you are interested in joining to NaveGo, please feel free to contact Dr. Rodrigo Gonzalez at rodralez [at] frm [dot] utn [dot] edu [dot] ar.
-
-
-## Researchers who are using NaveGo
-
-The following authors have expressed the use of NaveGo within their research:
-
-1. R. Rabiee, X. Zhong, Y. Yan and W.P. Tay, "LaIF: A Lane-Level Self-Positioning Scheme for Vehicles in GNSS-Denied Environments," in IEEE Transactions on Intelligent Transportation Systems, vol. 20, no. 8, pp. 2944-2961, August 2019. doi: 10.1109/TITS.2018.2870048. [Link](https://ieeexplore.ieee.org/document/8489926). NaveGo is used as a benchmark to compare to a proposed fusion algorithm based on a particle filter to achieve lane-level tracking accuracy under a GNSS-denied environment.
-
-2. O. Tokluoğlu and E. Çavuş, "Study of Utilizing Multiple IMUs for Inertial Navigation Systems Without GPS Aid," 2019 1st Global Power, Energy and Communication Conference (GPECOM), Nevsehir, Turkey, June 2019, pp. 86-89. doi: 10.1109/GPECOM.2019.8778612.  [Link](https://ieeexplore.ieee.org/abstract/document/8778612). The purpose of NaveGo in this work is to test the performance of an INS/GNSS system with multiple IMUs. 
-
-3. Bac Nghia Vu, Khanh Nhu Nguyen and Mung Huy Vu, "Practical Considerations of IMU Data Generator," 2019 3rd International Conference on Recent Advances in Signal Processing, Telecommunications & Computing (SigTelCom), Hanoi, Vietnam, March 2019, pp. 63-68. doi: 10.1109/SIGTELCOM.2019.8696196. [Link](https://ieeexplore.ieee.org/abstract/document/8696196/). NaveGo is used to simulate gyros data. Then, these data is compared to the output of a proposed method for the same goal.
-
-4. Mohamed Atia. "Design and simulation of sensor fusion using symbolic engines." Mathematical and Computer Modelling of Dynamical Systems 25.1 (2019): 40-62. February 2019. [Link](https://www.tandfonline.com/doi/abs/10.1080/13873954.2019.1566266). This work proposes a simulation framework for inertial sensors and an Attitude and Heading Reference System (AHRS). Atia uses as true data input to simulate sensors the same true data that NaveGo provides (see Fig. 7). Unfortunately, Atias' simulator and NaveGo performances are not compared in this work. 
-
-5. Ren, X., Sun, M., Jiang, C., Liu, L., & Huang, W. (2018). An Augmented Reality Geo-Registration Method for Ground Target Localization from a Low-Cost UAV Platform. Sensors, October 2018, vol. 18, no 11, p. 3739. [Link](https://www.mdpi.com/1424-8220/18/11/3739/htm). NaveGo is used to process RTK GPS data in the context of an INS/GNSS system for geo-registration and target localization. 
-
-6. M. Pachwicewicz and J. Weremczuk, "Accuracy Estimation of the Sounding Rocket Navigation System," 2018 XV International Scientific Conference on Optoelectronic and Electronic Sensors (COE), Warsaw, June 2018, pp. 1-4. doi: 10.1109/COE.2018.8435180. [Link](https://ieeexplore.ieee.org/abstract/document/8435180). In this paper NaveGo is used as a simulation framework for three types of IMUs.
-
-7. M.G. Deepika and A. Arun, "Analysis of INS Parameters and Error Reduction by Integrating GPS and INS Signals," 2018 International Conference on Design Innovations for 3Cs Compute Communicate Control (ICDI3C), Bangalore, April 2018, pp. 18-23. doi: 10.1109/ICDI3C.2018.00013. [Link](https://ieeexplore.ieee.org/abstract/document/8436621). This work is completely based on the synthetic data example provided by NaveGo. It is not clear what is the contribution of this paper.
-
-8. P.K. Diamantidis, ‘Attitude Navigation using a Sigma-Point Kalman Filter in an Error State Formulation’, Dissertation for Master degree. Department of Space and Plasma Physics, School of Electrical Engineering, KTH Royal Institute of Technology, Stockholm, Sweden. 2017. [Link](http://www.diva-portal.org/smash/get/diva2:1141205/FULLTEXT01.pdf). A 30-minutes static measurement of a gyroscope was made with and its Allan Variance plot is presented by using the NaveGo functions. 
-
-9. Shaoxing Hu, Shike Xu 1, Duhu Wang and Aiwu Zhang. Optimization Algorithm for Kalman Filter Exploiting the Numerical Characteristics of SINS/GPS Integrated Navigation Systems.  Sensors 2015, 15(11), 28402-28420. [Link](https://www.mdpi.com/117278). The mathematical model of this work is base on NaveGo's proposed mathematical model.
+If you are interested in joining NaveGo, please feel free to contact Dr. Rodrigo Gonzalez at rodralez [at] frm [dot] utn [dot] edu [dot] ar.
 
 
 # Examples
 
-The `example` folder contains several types of examples.
+The `example` folder contains several types of examples which try to be a kind of user manual for NaveGo.
 
 ## Allan variance example
 
-This example can be analyzed just executing the file `navego_example_allan.m`. Firstly, Allan variance is applied to 2-hours of real static measurements from a Sensonor STIM300 IMU. Then, almost 5 hours of synthetic inertial data are created and Allan variance is run on these simulated data.
+This example can be analyzed by just executing the file `navego_example_allan.m`. Firstly, Allan variance is applied to 2-hours of real static measurements from a Sensonor STIM300 IMU. Then, almost 5 hours of synthetic inertial data are created and Allan variance is run on these simulated data.
 
-## INS/GNSS integration example using real data
-
-Two examples of how to use NaveGo to post-process real data are provided as `navego_example_real_xxxx.m`, one for Ekinox-D IMU and another for MPU-6000 IMU. Both IMUs are integrated with Ekinox-D GNSS. These datasets were generated by driving a vehicle through the streets of Turin city (Italy).
-
-These two real examples are part of the data collection for the following article,
-
-* R. Gonzalez and P. Dabove. Performance Assessment of an Ultra Low-Cost Inertial Measurement Unit for Ground Vehicle Navigation. Sensors 2019, 19(18), 3865; https://doi.org/10.3390/s19183865. September 2019. [Download](https://www.mdpi.com/1424-8220/19/18/3865/pdf).
 
 
 ## INS/GNSS integration example using synthetic (simulated) data
 
-The file `navego_example_synth.m` tries to expose how NaveGo can be used step by step. It compares the performances of two simulated INS/GNSS systems, one using an ADIS16405 IMU and another using an ADIS16488 IMU, both fused using a simulated GNSS sensor.
+The NaveGo example with synthetic data is based on the output of a trajectory generator. This program provided both truth accelerations and angular velocities for a previous defined trajectory. NaveGo does not provide a trajectory generator.
 
-Next, a description of this file is provided.
+The file `navego_example_synth.m` tries to expose how NaveGo can be used step by step. Two IMU measurements are simulated according to the error profiles of ADIS16405 IMU and ADIS16488 IMU. Then, both IMU are fused using a simulated GNSS sensor. Finally, performances of the two simulated INS/GNSS systems are compared.
 
-### Reset section
-
-```matlab
-
-clc
-close all
-clear
-matlabrc
-
-addpath ../../
-addpath ../../simulation/
-addpath ../../conversions/
-
-versionstr = 'NaveGo, release v1.2';
-
-fprintf('\n%s.\n', versionstr)
-fprintf('\nNaveGo: starting simulation ... \n')
-
-```
-###  Code execution parameters
-
-```matlab
-
-% Comment any of the following parameters in order to NOT execute a particular portion of code
-
-GNSS_DATA = 'ON';   % Generate synthetic GNSS data
-IMU1_DATA = 'ON';   % Generate synthetic ADIS16405 IMU data
-IMU2_DATA = 'ON';   % Generate synthetic ADIS16488 IMU data
-
-IMU1_INS  = 'ON';   % Execute INS/GNSS integration for ADIS16405 IMU
-IMU2_INS  = 'ON';   % Execute INS/GNSS integration for ADIS16488 IMU
-
-PLOT      = 'ON';   % Plot results.
-
-% If a particular parameter is commented above, it is set by default to 'OFF'.
-
-if (~exist('GNSS_DATA','var')), GNSS_DATA  = 'OFF'; end
-if (~exist('IMU1_DATA','var')), IMU1_DATA = 'OFF'; end
-if (~exist('IMU2_DATA','var')), IMU2_DATA = 'OFF'; end
-if (~exist('IMU1_INS','var')),  IMU1_INS  = 'OFF'; end
-if (~exist('IMU2_INS','var')),  IMU2_INS  = 'OFF'; end
-if (~exist('PLOT','var')),      PLOT      = 'OFF'; end
-
-```
-
-### Conversion constants
-
-```matlab
-
-G =  9.80665;       % Gravity constant, m/s^2
-G2MSS = G;          % g to m/s^2
-MSS2G = (1/G);      % m/s^2 to g
-
-D2R = (pi/180);     % degrees to radians
-R2D = (180/pi);     % radians to degrees
-
-KT2MS = 0.514444;   % knot to m/s
-MS2KMH = 3.6;       % m/s to km/h
-
-```
-
-### Load reference data
-
-```matlab
-
-fprintf('NaveGo: loading reference dataset from a trajectory generator... \n')
-
-load ref.mat
-
-% ref.mat contains the reference data structure from which inertial 
-% sensors and GNSS wil be simulated. It must contain the following fields:
-
-%         t: Nx1 time vector (seconds).
-%       lat: Nx1 latitude (radians).
-%       lon: Nx1 longitude (radians).
-%         h: Nx1 altitude (m).
-%       vel: Nx3 NED velocities (m/s).
-%      roll: Nx1 roll angles (radians).
-%     pitch: Nx1 pitch angles (radians).
-%       yaw: Nx1 yaw angle vector (radians).
-%     DCMnb: Nx9 Direct Cosine Matrix nav-to-body. Each row contains 
-%            the elements of one DCM matrix ordered by columns as 
-%            [a11 a21 a31 a12 a22 a32 a13 a23 a33].
-%      freq: sampling frequency (Hz).
-
-
-```
-
-### ADIS16405 IMU error profile
-
-```matlab
-
-% IMU data structure:
-%         t: Ix1 time vector (seconds).
-%        fb: Ix3 accelerations vector in body frame XYZ (m/s^2).
-%        wb: Ix3 turn rates vector in body frame XYZ (radians/s).
-%       arw: 1x3 angle random walks (rad/s/root-Hz).
-%      arrw: 1x3 angle rate random walks (rad/s^2/root-Hz).
-%       vrw: 1x3 velocity random walks (m/s^2/root-Hz).
-%      vrrw: 1x3 velocity rate random walks (m/s^3/root-Hz).
-%    g_std: 1x3 gyros standard deviations (radians/s).
-%    a_std: 1x3 accrs standard deviations (m/s^2).
-%    gb_sta: 1x3 gyros static biases or turn-on biases (radians/s).
-%    ab_sta: 1x3 accrs static biases or turn-on biases (m/s^2).
-%    gb_dyn: 1x3 gyros dynamic biases or bias instabilities (radians/s).
-%    ab_dyn: 1x3 accrs dynamic biases or bias instabilities (m/s^2).
-%   gb_corr: 1x3 gyros correlation times (seconds).
-%   ab_corr: 1x3 accrs correlation times (seconds).
-%    gb_psd: 1x3 gyros dynamic biases PSD (rad/s/root-Hz).
-%    ab_psd: 1x3 accrs dynamic biases PSD (m/s^2/root-Hz);
-%      freq: 1x1 sampling frequency (Hz).
-% ini_align: 1x3 initial attitude at t(1), [roll pitch yaw] (rad).
-% ini_align_err: 1x3 initial attitude errors at t(1), [roll pitch yaw] (rad).
-
-ADIS16405.arw      = 2   .* ones(1,3);     % Angle random walks [X Y Z] (deg/root-hour)
-ADIS16405.arrw     = zeros(1,3);           % Angle rate random walks [X Y Z] (deg/root-hour/s)
-ADIS16405.vrw      = 0.2 .* ones(1,3);     % Velocity random walks [X Y Z] (m/s/root-hour)
-ADIS16405.vrrw     = zeros(1,3);           % Velocity rate random walks [X Y Z] (deg/root-hour/s)
-ADIS16405.gb_sta   = 3   .* ones(1,3);     % Gyro static biases [X Y Z] (deg/s)
-ADIS16405.ab_sta   = 50  .* ones(1,3);     % Acc static biases [X Y Z] (mg)
-ADIS16405.gb_dyn   = 0.007 .* ones(1,3);   % Gyro dynamic biases [X Y Z] (deg/s)
-ADIS16405.ab_dyn   = 0.2 .* ones(1,3);     % Acc dynamic biases [X Y Z] (mg)
-ADIS16405.gb_corr  = 100 .* ones(1,3);     % Gyro correlation times [X Y Z] (seconds)
-ADIS16405.ab_corr  = 100 .* ones(1,3);     % Acc correlation times [X Y Z] (seconds)
-ADIS16405.freq     = ref.freq;             % IMU operation frequency [X Y Z] (Hz)
-% ADIS16405.m_psd     = 0.066 .* ones(1,3);  % Magnetometer noise density [X Y Z] (mgauss/root-Hz)
-
-% ref dataset will be used to simulate IMU sensors.
-ADIS16405.t = ref.t;                       % IMU time vector
-dt = mean(diff(ADIS16405.t));              % IMU sampling interval
-
-imu1 = imu_si_errors(ADIS16405, dt);       % Transform IMU manufacturer error units to SI units.
-
-imu1.ini_align_err = [3 3 10] .* D2R;                   % Initial attitude align errors for matrix P in Kalman filter, [roll pitch yaw] (radians)  
-imu1.ini_align = [ref.roll(1) ref.pitch(1) ref.yaw(1)]; % Initial attitude align at t(1) (radians).
-
-```
-
-### ADIS16488 IMU error profile
-
-```matlab
-
-ADIS16488.arw      = 0.3  .* ones(1,3);     % Angle random walks [X Y Z] (deg/root-hour)
-ADIS16488.arrw     = zeros(1,3);            % Angle rate random walks [X Y Z] (deg/root-hour/s)
-ADIS16488.vrw      = 0.029.* ones(1,3);     % Velocity random walks [X Y Z] (m/s/root-hour)
-ADIS16488.vrrw     = zeros(1,3);            % Velocity rate random walks [X Y Z] (deg/root-hour/s)
-ADIS16488.gb_sta   = 0.2  .* ones(1,3);     % Gyro static biases [X Y Z] (deg/s)
-ADIS16488.ab_sta   = 16   .* ones(1,3);     % Acc static biases [X Y Z] (mg)
-ADIS16488.gb_dyn   = 6.5/3600  .* ones(1,3);% Gyro dynamic biases [X Y Z] (deg/s)
-ADIS16488.ab_dyn   = 0.1  .* ones(1,3);     % Acc dynamic biases [X Y Z] (mg)
-ADIS16488.gb_corr  = 100  .* ones(1,3);     % Gyro correlation times [X Y Z] (seconds)
-ADIS16488.ab_corr  = 100  .* ones(1,3);     % Acc correlation times [X Y Z] (seconds)
-ADIS16488.freq     = ref.freq;              % IMU operation frequency [X Y Z] (Hz)
-% ADIS16488.m_psd = 0.054 .* ones(1,3);       % Magnetometer noise density [X Y Z] (mgauss/root-Hz)
-
-% ref dataset will be used to simulate IMU sensors.
-ADIS16488.t = ref.t;                        % IMU time vector
-dt = mean(diff(ADIS16488.t));               % IMU sampling interval
-
-imu2 = imu_si_errors(ADIS16488, dt);        % Transform IMU manufacturer error units to SI units.
-
-imu2.ini_align_err = [1 1 5] .* D2R;                     % Initial attitude align errors for matrix P in Kalman filter, [roll pitch yaw] (radians)  
-imu2.ini_align = [ref.roll(1) ref.pitch(1) ref.yaw(1)];  % Initial attitude align at t(1) (radians).
-
-```
-
-### Garmin 5-18 Hz GPS error profile
-
-```matlab
-
-% GNSS data structure:
-%         t: Mx1 time vector (seconds).
-%       lat: Mx1 latitude (radians).
-%       lon: Mx1 longitude (radians).
-%         h: Mx1 altitude (m).
-%       vel: Mx3 NED velocities (m/s).
-%       std: 1x3 position standard deviations, [lat lon h] (rad, rad, m).
-%      stdm: 1x3 position standard deviations, [lat lon h] (m, m, m).
-%      stdv: 1x3 velocity standard deviations, [Vn Ve Vd] (m/s).
-%      larm: 3x1 lever arm from IMU to GNSS antenna (x-fwd, y-right, z-down) (m).
-%      freq: 1x1 sampling frequency (Hz).
-%   zupt_th: 1x1 ZUPT threshold (m/s).
-%  zupt_win: 1x1 ZUPT time window (seconds).
-%       eps: 1x1 time interval to compare IMU time vector to GNSS time vector (seconds).
-
-gnss.stdm = [5 5 10];                   % GNSS positions standard deviations [lat lon h] (meters)
-gnss.stdv = 0.1 * KT2MS .* ones(1,3);   % GNSS velocities standard deviations [Vn Ve Vd] (meters/s)
-gnss.larm = zeros(3,1);                 % GNSS lever arm from IMU to GNSS antenna (x-fwd, y-right, z-down) (m).
-gnss.freq = 5;                          % GNSS operation frequency (Hz)
-
-% Parameters for ZUPT detection algorithm
-gnss.zupt_th = 0.5;   % ZUPT threshold (m/s).
-gnss.zupt_win = 4;    % ZUPT time window (seconds).
-
-% Epsilon is a time window within a new GNSS data will be searched at the current INS time. 
-% It is a critical value since it sets when the Kalman filter will be executed. 
-
-gnss.eps = 1E-3;
-
-% The following figure tries to show when the Kalman filter (KF) will be run.
-% If a new element from GNSS time vector is available at the current INS time inside the window time
-% set by epsilon, the Kalman filter (KF) will be executed.
-%
-%                    I1  I2  I3  I4  I5  I6  I7  I8  I9  I10 I11 I12 I3 
-% INS time vector:   |---|---|---|---|---|---|---|---|---|---|---|---|
-% Epsilon:          |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|  
-% GNSS time vector:  --|------|------|------|------|------|------|
-%                      G1     G2     G4     G5     G6     G7     G8
-% KF execution:               ^      ^      ^             ^      ^ 					 	
-%
-% It can be seen that the KF is not execute at G1 and G6 because of a wrong choice of epsilon.
-%
-% A longer epsilon will tend to not recognize a new GNSS input. On the other hand, a shorter 
-% epsilon will tend to execute the KF using the same GNSS input.
-
-```
-
-### Generate GNSS synthetic data
-
-```matlab
-
-rng('shuffle')                  % Reset pseudo-random seed
-
-if strcmp(GNSS_DATA, 'ON')       % If simulation of GNSS data is required ...
-    
-    fprintf('NaveGo: generating GNSS synthetic data... \n')
-    
-    gnss = gnss_err_profile(ref.lat(1), ref.h(1), gnss); % Transform GNSS manufacturer error units to SI units.
-    
-    gnss = gnss_gen(ref, gnss);  % Generate GNSS dataset from reference dataset.
-
-    save gnss.mat gnss
-    
-else
-    
-    fprintf('NaveGo: loading GNSS data... \n') 
-    
-    load gnss.mat
-end
-
-```
-
-### Generate IMU1 synthetic data 
-
-```matlab
-
-rng('shuffle')                  % Reset pseudo-random seed
-
-if strcmp(IMU1_DATA, 'ON')      % If simulation of IMU1 data is required ...
-    
-    fprintf('NaveGo: generating IMU1 ACCR synthetic data... \n')
-    
-    fb = acc_gen (ref, imu1);   % Generate acc in the body frame
-    imu1.fb = fb;
-    
-    fprintf('NaveGo: generating IMU1 GYRO synthetic data... \n')
-    
-    wb = gyro_gen (ref, imu1);  % Generate gyro in the body frame
-    imu1.wb = wb;
-    
-    save imu1.mat imu1
-    
-    clear wb fb;
-    
-else
-    fprintf('NaveGo: loading IMU1 data... \n')
-    
-    load imu1.mat
-end
-
-```
-
-### Generate IMU2 synthetic data
-
-```matlab
-
-rng('shuffle')					% Reset pseudo-random seed
-
-if strcmp(IMU2_DATA, 'ON')      % If simulation of IMU2 data is required ...
-    
-    fprintf('NaveGo: generating IMU2 ACCR synthetic data... \n')
-    
-    fb = acc_gen (ref, imu2);   % Generate acc in the body frame
-    imu2.fb = fb;
-    
-    fprintf('NaveGo: generating IMU2 GYRO synthetic data... \n')
-    
-    wb = gyro_gen (ref, imu2);  % Generate gyro in the body frame
-    imu2.wb = wb;
-    
-    save imu2.mat imu2
-    
-    clear wb fb;
-    
-else
-    fprintf('NaveGo: loading IMU2 data... \n')
-    
-    load imu2.mat
-end
-
-```
-
-### Print navigation time
-
-```matlab
-
-to = (ref.t(end) - ref.t(1));
-
-fprintf('NaveGo: navigation time is %.2f minutes or %.2f seconds. \n', (to/60), to)o)
-
-```
-
-### INS/GNSS integration using IMU1
-
-```matlab
-
-if strcmp(IMU1_INS, 'ON')
-    
-    fprintf('NaveGo: INS/GNSS navigation estimates for IMU1... \n')
-    
-    % Execute INS/GNSS integration
-    % ---------------------------------------------------------------------
-    nav1_e = ins_gnss(imu1, gnss, 'dcm');
-    % ---------------------------------------------------------------------
-    
-    save nav1_e.mat nav1_e
-    
-else
-    
-    fprintf('NaveGo: loading INS/GNSS integration for IMU1... \n')
-    
-    load nav1_e.mat
-end
-
-```
-
-### INS/GNSS integration using IMU2
-
-```matlab
-
-if strcmp(IMU2_INS, 'ON')
-    
-    fprintf('NaveGo: INS/GNSS navigation estimates for IMU2... \n')
-    
-    % Execute INS/GNSS integration
-    % ---------------------------------------------------------------------
-    nav2_e = ins_gnss(imu2, gnss, 'quaternion');
-    % ---------------------------------------------------------------------
-    
-    save nav2_e.mat nav2_e
-    
-else
-    
-    fprintf('NaveGo: loading INS/GNSS integration for IMU2... \n')
-    
-    load nav2_e.mat
-end
-
-```
-
-### Interpolate INS/GNSS dataset 
-
-```matlab
-
-% INS/GNSS estimates and GNSS data are interpolated according to the
-% reference dataset.
-
-[nav1_ref, ref_1] = navego_interpolation (nav1_e, ref);
-[nav2_ref, ref_2] = navego_interpolation (nav2_e, ref);
-[gnss_ref, ref_g] = navego_interpolation (gnss, ref);
-
-```
-
-### Print on console RMSE from INS/GNSS IMU1
-
-```matlab
-
-print_rmse (nav1_ref, gnss_ref, ref_1, ref_g, 'INS/GNSS IMU1');
-
-```
-
-### Print on console RMSE from INS/GNSS IMU2
-
-```matlab
-
-print_rmse (nav2_ref, gnss_ref, ref_2, ref_g, 'INS/GNSS IMU2');
-
-```
 
 ### References
 
 * R. Gonzalez, J.I. Giribet, and H.D. Patiño. NaveGo: a simulation framework for low-cost integrated navigation systems, Journal of Control Engineering and Applied Informatics, vol. 17, issue 2, pp. 110-120, 2015. [Download](http://ceai.srait.ro/index.php?journal=ceai&page=article&op=view&path%5B%5D=2478).
 
-* Analog Devices. ADIS16400/ADIS16405 datasheet. High Precision Tri-Axis Gyroscope, Accelerometer, Magnetometer. Rev. B. 
+* Analog Devices. ADIS16400/ADIS16405 datasheet. High Precision Tri-Axis Gyroscope, Accelerometer, Magnetometer. Rev. B.
 [Download](http://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16400_16405.pdf).
 
-* Analog Devices. ADIS16488 datasheet. Tactical Grade Ten Degrees of Freedom Inertial Sensor. Rev. G. 
+* Analog Devices. ADIS16488 datasheet. Tactical Grade Ten Degrees of Freedom Inertial Sensor. Rev. G.
 [Download](http://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488.pdf).
 
-* Garmin International, Inc. GPS 18x TECHNICAL SPECIFICATIONS. Revision D. October 2011. 
+* Garmin International, Inc. GPS 18x TECHNICAL SPECIFICATIONS. Revision D. October 2011.
 [Download](http://static.garmin.com/pumac/GPS_18x_Tech_Specs.pdf).
 
 
-## Acknowledgments
+## INS/GNSS integration example using real data
 
-We would like to thank to many people that have contribute to make NaveGo a better tool:
+Two examples of how to use NaveGo to post-process real data are provided as `navego_example_real_xxxx.m`, one for Ekinox-D IMU and another for MPU-6000 IMU. Both IMUs are integrated with Ekinox-D GNSS. These datasets were generated by driving a vehicle through the streets of Turin city (Italy).
+
+These two real examples are part of the data collection used in the article (Gonzalez and Dabove, 2019).
+
+### References
+
+* R. Gonzalez and P. Dabove. Performance Assessment of an Ultra Low-Cost Inertial Measurement Unit for Ground Vehicle Navigation. Sensors 2019, 19(18), 3865; https://doi.org/10.3390/s19183865. September 2019. [Download](https://www.mdpi.com/1424-8220/19/18/3865/pdf).
+
+* SBG Systems. SBG Ekinox-D High Accuracy Inertial System Brochure, Tactical grade MEMS Inertial Systems, v1.0. February 2014.
+
+* InvenSense Inc. MPU-6000/MPU-6050 Product Specification. Document Number: PS-MPU-6000A-00. Revision: 3.4. Release Date: 08/19/2013.
+
+# Researchers who are using NaveGo
+
+The following 11 papers have expressed the use of NaveGo for research:
+
+1. Benjamin Noack, Christopher Funk, Susanne Radtke,and Uwe D. Hanebeck. State Estimation with Event-Based InputsUsing Stochastic Triggers. 1st Virtual IFAC World Congress (IFAC-V 2020). Germany, July 11-17, 2020 [Link](https://isas.iar.kit.edu/pdf/IFAC20_Noack.pdf).
+
+2. W. Sun, J. Wu, W. Ding and S. Duan, "A Robust Indirect Kalman Filter Based on the Gradient Descent Algorithm for Attitude Estimation During Dynamic Conditions," in IEEE Access, vol. 8, pp. 96487-96494, 2020, doi: 10.1109/ACCESS.2020.2997250.
+
+3. R. Rabiee, X. Zhong, Y. Yan and W.P. Tay, "LaIF: A Lane-Level Self-Positioning Scheme for Vehicles in GNSS-Denied Environments," in IEEE Transactions on Intelligent Transportation Systems, vol. 20, no. 8, pp. 2944-2961, August 2019. doi: 10.1109/TITS.2018.2870048. [Link](https://ieeexplore.ieee.org/document/8489926). NaveGo is used as a benchmark to compare to a proposed fusion algorithm based on a particle filter to achieve lane-level tracking accuracy under a GNSS-denied environment.
+
+4. O. Tokluoğlu and E. Çavuş, "Study of Utilizing Multiple IMUs for Inertial Navigation Systems Without GPS Aid," 2019 1st Global Power, Energy and Communication Conference (GPECOM), Nevsehir, Turkey, June 2019, pp. 86-89. doi: 10.1109/GPECOM.2019.8778612.  [Link](https://ieeexplore.ieee.org/abstract/document/8778612). The purpose of NaveGo in this work is to test the performance of an INS/GNSS system with multiple IMUs.
+
+5. Bac Nghia Vu, Khanh Nhu Nguyen and Mung Huy Vu, "Practical Considerations of IMU Data Generator," 2019 3rd International Conference on Recent Advances in Signal Processing, Telecommunications & Computing (SigTelCom), Hanoi, Vietnam, March 2019, pp. 63-68. doi: 10.1109/SIGTELCOM.2019.8696196. [Link](https://ieeexplore.ieee.org/abstract/document/8696196/). NaveGo is used to simulate gyros data. Then, these data is compared to the output of a proposed method for the same goal.
+
+6. Mohamed Atia. "Design and simulation of sensor fusion using symbolic engines." Mathematical and Computer Modelling of Dynamical Systems 25.1 (2019): 40-62. February 2019. [Link](https://www.tandfonline.com/doi/abs/10.1080/13873954.2019.1566266). This work proposes a simulation framework for inertial sensors and an Attitude and Heading Reference System (AHRS). Atia uses as true data input to simulate sensors the same true data that NaveGo provides (see Fig. 7). Unfortunately, Atias' simulator and NaveGo performances are not compared in this work.
+
+7. Ren, X., Sun, M., Jiang, C., Liu, L., & Huang, W. (2018). An Augmented Reality Geo-Registration Method for Ground Target Localization from a Low-Cost UAV Platform. Sensors, October 2018, vol. 18, no 11, p. 3739. [Link](https://www.mdpi.com/1424-8220/18/11/3739/htm). NaveGo is used to process RTK GPS data in the context of an INS/GNSS system for geo-registration and target localization.
+
+8. M. Pachwicewicz and J. Weremczuk, "Accuracy Estimation of the Sounding Rocket Navigation System," 2018 XV International Scientific Conference on Optoelectronic and Electronic Sensors (COE), Warsaw, June 2018, pp. 1-4. doi: 10.1109/COE.2018.8435180. [Link](https://ieeexplore.ieee.org/abstract/document/8435180). In this paper NaveGo is used as a simulation framework for three types of IMUs.
+
+9. M.G. Deepika and A. Arun, "Analysis of INS Parameters and Error Reduction by Integrating GPS and INS Signals," 2018 International Conference on Design Innovations for 3Cs Compute Communicate Control (ICDI3C), Bangalore, April 2018, pp. 18-23. doi: 10.1109/ICDI3C.2018.00013. [Link](https://ieeexplore.ieee.org/abstract/document/8436621). This work is completely based on the synthetic data example provided by NaveGo. It is not clear what is the contribution of this paper.
+
+10. P.K. Diamantidis, ‘Attitude Navigation using a Sigma-Point Kalman Filter in an Error State Formulation’, Dissertation for Master degree. Department of Space and Plasma Physics, School of Electrical Engineering, KTH Royal Institute of Technology, Stockholm, Sweden. 2017. [Link](http://www.diva-portal.org/smash/get/diva2:1141205/FULLTEXT01.pdf). A 30-minutes static measurement of a gyroscope was made with and its Allan Variance plot is presented by using the NaveGo functions.
+
+11. Shaoxing Hu, Shike Xu 1, Duhu Wang and Aiwu Zhang. Optimization Algorithm for Kalman Filter Exploiting the Numerical Characteristics of SINS/GPS Integrated Navigation Systems.  Sensors 2015, 15(11), 28402-28420. [Link](https://www.mdpi.com/117278). The mathematical model of this work is base on NaveGo's proposed mathematical model.
+
+
+# Acknowledgments
+
+We would like to thank to the many people that have contributed to make NaveGo a better tool:
 
 * Dr. Juan Ignacio Giribet (National University of Buenos Aires, Argentina) for this continuous support on theory aspects of INS/GNSS systems.
 
@@ -546,3 +185,6 @@ We would like to thank to many people that have contribute to make NaveGo a bett
 
 * Dr. Paolo Dabove and Dr. Marco Piras (both from DIATI, Politecnico di Torino, Italy) for helping to debug NaveGo and suggesting new features.
 
+* Dr. Paolo Zoccarato for his comments on attitude conversion.
+
+	
