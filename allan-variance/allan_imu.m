@@ -34,6 +34,10 @@ function imu = allan_imu (imu_sta, verbose)
 %   ab_dyn: 1x3 accrs bias instability in m/s^2. Value is taken
 %       from the plot at the minimun value.
 %
+%   ab_psd:
+%
+%   ab_psd:
+%
 %   gb_corr: 1x3 gyros correlation times (s).
 %   ab_corr: 1x3 accrs correlation times (s).
 %
@@ -95,8 +99,8 @@ function imu = allan_imu (imu_sta, verbose)
 %   M.A. Hopcroft. Allan overlap MATLAB function v2.24.
 % https://www.mathworks.com/matlabcentral/fileexchange/13246-allan
 %
-% Version: 007
-% Date:    2019/02/18
+% Version: 008
+% Date:    2021/03/07
 % Author:  Rodrigo Gonzalez <rodralez@frm.utn.edu.ar>
 % URL:     https://github.com/rodralez/navego
 
@@ -140,7 +144,7 @@ imu.g_linear = zeros(3,2);
 
 %% TIME VECTOR FOR ALLAN VARIANCE
 
-% Find the sampling time and data frequency
+% Sampling time and data frequency
 dt = median(diff(imu_sta.t));
 
 % Frequency must be rounded to an integer number for allan_overlap function
@@ -163,19 +167,21 @@ for i = 1:length(TAU)-1
     tau_v = [tau_v TAU(i):TAU(i):TAU(i+1) ];
 end
 
-% Delete repeated elements
+% Deleting repeated elements
 dd = diff (tau_v);
 idl = dd ~= 0;
 idl = [idl true];
 tau_v = tau_v(idl);
 
-fprintf('allan_imu: length of time is %02.3d hours or %.2f minutes or %.2f seconds. \n\n', (T/60/60), (T/60), T)
+fprintf('allan_imu: length of time vector is %02.3d hours or %.2f minutes or %.2f seconds. \n', (T/60/60), (T/60), T)
 
 %% ACCELEROMETERS
 
 for i=1:3
     
-    fprintf('\nallan_imu: Allan variance for FB %d \n', i)   
+    fprintf('\n')
+    
+    fprintf('allan_imu: Allan variance for FB %d \n', i)   
     
     data.freq = imu_sta.fb(:,i);
     
@@ -189,7 +195,7 @@ for i=1:3
     imu.vrw(i) = vrw;
     
     [b_dyn, t_corr] = allan_get_b_dyn (tau, allan_o);
-    imu.ab_dyn(i) = b_dyn;
+    imu.ab_dyn(i)   = b_dyn;
     imu.ab_corr(i)  = t_corr;
     
     imu.ab_sta(i)    = s.mean; 
@@ -214,7 +220,9 @@ legend('ACC X','ACC Y', 'ACC Z' )
 
 for i=1:3
     
-    fprintf('\nallan_imu: Allan variance for WB %d \n', i)
+    fprintf('\n')
+    
+    fprintf('allan_imu: Allan variance for WB %d \n', i)
     
     data.freq = imu_sta.wb(:,i);
     
@@ -228,8 +236,8 @@ for i=1:3
     imu.arw(i) = arw;
     
     [b_dyn, t_corr] = allan_get_b_dyn (tau, allan_o);
-    imu.gb_dyn(i) = b_dyn;
-    imu.gb_corr(i) = t_corr;
+    imu.gb_dyn(i)   = b_dyn;
+    imu.gb_corr(i)  = t_corr;
     
     imu.gb_sta(i) = s.mean;
     
@@ -242,13 +250,20 @@ for i=1:3
     imu.g_linear(i,:) = s.linear;
 end
 
-imu.freq = data.rate;
-
 % Plot GYROS
 figure
 loglog(imu.wb_tau, imu.wb_allan, '-o');
 grid on
 title('GYROS ALLAN VARIANCES')
 legend('GYRO X','GYRO Y', 'GYRO Z' )
+
+%% Extra data
+
+% Sampling frequency
+imu.freq = data.rate;
+
+% Dynamic bias PSD
+imu.ab_psd = imu.ab_dyn .* sqrt(imu.ab_corr) / 2;  % rad/s/root-Hz;navigation
+imu.gb_psd = imu.gb_dyn .* sqrt(imu.gb_corr) / 2;  % rad/s/root-Hz;
 
 end

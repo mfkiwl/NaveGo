@@ -1,4 +1,4 @@
-% navego_allan_example: example of how to implement the Allan variance 
+% navego_example_allan: example of how to implement the Allan variance 
 % procedure with NaveGo functions.
 %
 %   Copyright (C) 2014, Rodrigo Gonzalez, all rights reserved.
@@ -93,12 +93,12 @@ fprintf('NaveGo: Allan variance analysis from synthetic data based on Microstrai
 
 %% SYNTHETIC STATIC DATA
 
-N = 24 * 60 * 60;   % 12 hours of simulation
+N = 24 * 60 * 60;   % 24 hours of simulation
 M = [N, 3];
 
 ref.freq = 100;
 
-ref.t = ((0:N-1)/ref.freq)';   % Simulated time vector is about 5.3275 hours
+ref.t = ((0:N-1)/ref.freq)';   
 to = (ref.t(end) - ref.t(1));
 fprintf('NaveGo: dataset time span is %.2f hours or %.2f minutes or %.2f seconds. \n', (to/60/60), (to/60), to)
 
@@ -118,7 +118,7 @@ ref.DCMnb_m(:,1) = ones(N,1);
 ref.DCMnb_m(:,5) = ones(N,1);
 ref.DCMnb_m(:,9) = ones(N,1);
 
-%% Microstrain 3DM-GX3-35 IMU
+%% MICROSTRAIN 3DM-GX3-35 IMU
 
 % IMU data structure:
 %         t: Ix1 time vector (seconds).

@@ -1,7 +1,7 @@
 function imu_si = imu_si_errors(imu, dt)
 % imu_err_profile: converts IMU errors manufacturer units to SI units.
 %
-% INPUT:
+% INPUT
 %	imu, data structure with IMU error profile in manufacturer units.
 %       imu.arw:      angle random walks [X Y Z] (deg/root-hour)
 %       imu.arrw:     angle rate random walks [X Y Z] (deg/root-hour/s)
@@ -10,13 +10,13 @@ function imu_si = imu_si_errors(imu, dt)
 %       imu.gb_sta:   gyro static biases [X Y Z] (deg/s)
 %       imu.ab_sta:   acc static biases [X Y Z] (mg)
 %       imu.gb_dyn:   gyro dynamic biases [X Y Z] (deg/s)
-%       imu.ab_dynt:  acc dynamic biases [X Y Z] (mg)
+%       imu.ab_dyn:   acc dynamic biases [X Y Z] (mg)
 %       imu.gb_corr:  gyro correlation times [X Y Z] (seconds)
 %       imu.ab_corr:  acc correlation times [X Y Z] (seconds)
 %       imu.m_psd:    magnetometer noise density [X Y Z] (mgauss/root-Hz)
 %		dt:           IMU sampling interval (seconds).
 %
-% OUTPUT:
+% OUTPUT
 %	imu_si: data structure with IMU error profile in SI units.
 %       imu_si.arw:      angle random walks [X Y Z] (rad/s/root-Hz)
 %       imu_si.arrw:     angle rate random walks [X Y Z] (rad/s^2/root-Hz)
@@ -25,9 +25,11 @@ function imu_si = imu_si_errors(imu, dt)
 %       imu_si.gb_sta:   gyro static biases [X Y Z] (rad/s)
 %       imu_si.ab_sta:   acc static biases [X Y Z] (m/s^2)
 %       imu_si.gb_dyn:   gyro dynamic biases [X Y Z] (rad/s)
-%       imu_si.ab_dynt:  acc dynamic biases [X Y Z] (m/s^2)
+%       imu_si.ab_dyn:   acc dynamic biases [X Y Z] (m/s^2)
 %       imu_si.gb_corr:  gyro correlation times [X Y Z] (seconds)
 %       imu_si.ab_corr:  acc correlation times [X Y Z] (seconds)
+%       imu_si.gb_psd:   gyro dynamic bias PSD [X Y Z] (rad/s/root-Hz)
+%       imu_si.ab_psd:   acc dynamic bias PSD [X Y Z] (m/s^2/root-Hz)
 %       imu_si.m_psd:    magnetometer noise density [X Y Z] (tesla). 
 %		dt:              IMU sampling interval (seconds).
 %
@@ -87,7 +89,7 @@ imu_si.gb_dyn = imu.gb_dyn .* D2R;          % deg/s -> rad/s;
 if (isinf(imu.gb_corr))
     imu_si.gb_psd = imu_si.gb_dyn;          % rad/s (approximation)
 else
-    imu_si.gb_psd = imu_si.gb_dyn .* sqrt(imu.gb_corr);  % rad/s/root-Hz; 
+    imu_si.gb_psd = imu_si.gb_dyn .* sqrt(imu.gb_corr);  % rad/s/root-Hz
 end
 
 if (isinf(imu.ab_corr))

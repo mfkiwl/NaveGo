@@ -1,4 +1,4 @@
-% navego_example_synth: Example of how to use NaveGo to generate
+% navego_example_synth: example of how to use NaveGo to generate
 % both IMU and GNSS synthetic (simulated) data. Then, synthetic data is
 % fused.
 %
@@ -126,7 +126,7 @@ load ref.mat
 %            matrix ordered as [a11 a21 a31 a12 a22 a32 a13 a23 a33].
 %      freq: sampling frequency (Hz).
 
-%% ADIS16405 IMU error profile
+%% ADIS16405 IMU ERROR PROFILE
 
 % IMU data structure:
 %         t: Ix1 time vector (seconds).
@@ -172,7 +172,7 @@ imu1 = imu_si_errors(ADIS16405, dt);       % IMU manufacturer error units to SI 
 imu1.ini_align_err = [3 3 10] .* D2R;                   % Initial attitude align errors for matrix P in Kalman filter, [roll pitch yaw] (radians)
 imu1.ini_align = [ref.roll(1) ref.pitch(1) ref.yaw(1)]; % Initial attitude align at t(1) (radians).
 
-%% ADIS16488 IMU error profile
+%% ADIS16488 IMU ERROR PROFILE
 
 ADIS16488.arw      = 0.3  .* ones(1,3);     % Angle random walks [X Y Z] (deg/root-hour)
 ADIS16488.arrw     = zeros(1,3);            % Angle rate random walks [X Y Z] (deg/root-hour/s)
@@ -196,7 +196,7 @@ imu2 = imu_si_errors(ADIS16488, dt);        % Transform IMU manufacturer error u
 imu2.ini_align_err = [1 1 5] .* D2R;                     % Initial attitude align errors for matrix P in Kalman filter, [roll pitch yaw] (radians)
 imu2.ini_align = [ref.roll(1) ref.pitch(1) ref.yaw(1)];  % Initial attitude align at t(1) (radians)
 
-%% Garmin 5-18 Hz GPS error profile
+%% GARMIN 5-18 Hz GPS ERROR PROFILE
 
 % GNSS data structure:
 %         t: Mx1 time vector (seconds).
@@ -223,8 +223,8 @@ gnss.zupt_th = 0.5;   % ZUPT threshold (m/s).
 gnss.zupt_win = 4;    % ZUPT time window (seconds).
 
 % The following figure tries to show when the Kalman filter (KF) will be execute.
-% If a new element from GNSS time vector is available at the current INS time inside
-% the window time [-eps eps] set by epsilon, the Kalman filter (KF) will be executed.
+% If a new element from GNSS time vector is available at the current INS
+% time, within the window time [-eps eps] set by epsilon, the Kalman filter (KF) will be executed.
 %
 %                    I1  I2  I3  I4  I5  I6  I7  I8  I9  I10 I11 I12 I3
 % INS time vector:   |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -234,9 +234,8 @@ gnss.zupt_win = 4;    % ZUPT time window (seconds).
 % KF execution:               ^      ^      ^             ^      ^
 %
 % It can be seen that the KF is not execute at G1 and G6 because of a wrong choice of epsilon.
-%
-% A rule of thumb for choosing eps is:
 
+% A rule of thumb for choosing eps is:
 gnss.eps = mean(diff(imu1.t)) / 3;
 
 %% GNSS SYNTHETIC DATA
@@ -247,12 +246,11 @@ if strcmp(GNSS_DATA, 'ON')      % If simulation of GNSS data is required...
     
     fprintf('NaveGo: generating GNSS synthetic data... \n')
     
-    gnss = gnss_err_profile(ref.lat(1), ref.h(1), gnss); % GNSS manufacturer error units to SI units
+    gnss = gnss_m2r(ref.lat(1), ref.h(1), gnss); % GNSS manufacturer error units to SI units
     
     gnss = gnss_gen(ref, gnss);  % Generation of GNSS dataset from reference dataset
     
-    save gnss.mat gnss
-    
+    save gnss.mat gnss    
 else
     
     fprintf('NaveGo: loading GNSS synthetic data... \n')
@@ -278,9 +276,9 @@ if strcmp(IMU1_DATA, 'ON')      % If simulation of IMU1 data is required...
     
     save imu1.mat imu1
     
-    clear wb fb;
-    
+    clear wb fb;    
 else
+    
     fprintf('NaveGo: loading IMU1 synthetic data... \n')
     
     load imu1.mat
@@ -304,67 +302,65 @@ if strcmp(IMU2_DATA, 'ON')      % If simulation of IMU2 data is required ...
     
     save imu2.mat imu2
     
-    clear wb fb;
-    
+    clear wb fb;    
 else
+    
     fprintf('NaveGo: loading IMU2 synthetic data... \n')
     
     load imu2.mat
 end
 
-%% Printing navigation time
+%% NAVIGATION TIME
 
 to = (ref.t(end) - ref.t(1));
 
 fprintf('NaveGo: navigation time is %.2f minutes or %.2f seconds. \n', (to/60), to)
 
-%% INS/GNSS integration using IMU1
+%% INS/GNSS INTEGRATION USING IMU1
 
 if strcmp(IMU1_INS, 'ON')
     
-    fprintf('NaveGo: processing INS/GNSS navigation estimates for IMU1... \n')
+    fprintf('NaveGo: processing INS/GNSS integration for IMU1... \n')
     
     % INS/GNSS integration
     % ---------------------------------------------------------------------
     nav1_e = ins_gnss(imu1, gnss, 'dcm');           % Attitude will be estimated by the DCM equations
     % ---------------------------------------------------------------------
     
-    save nav1_e.mat nav1_e
-    
+    save nav1_e.mat nav1_e    
 else
     
-    fprintf('NaveGo: loading INS/GNSS navigation estimates for IMU1... \n')
+    fprintf('NaveGo: loading INS/GNSS integration for IMU1... \n')
     
     load nav1_e.mat
 end
 
-%% INS/GNSS integration using IMU2
+%% INS/GNSS INTEGRATION USING IMU2
 
 if strcmp(IMU2_INS, 'ON')
     
-    fprintf('NaveGo: processing INS/GNSS navigation estimates for IMU2... \n')
+    fprintf('NaveGo: processing INS/GNSS integration for IMU2... \n')
     
     % INS/GNSS integration
     % ---------------------------------------------------------------------
     nav2_e = ins_gnss(imu2, gnss, 'quaternion');    % Attitude will be estimated by quaternion equations
     % ---------------------------------------------------------------------
     
-    save nav2_e.mat nav2_e
-    
+    save nav2_e.mat nav2_e    
 else
     
-    fprintf('NaveGo: loading INS/GNSS navigation estimates for IMU2... \n')
+    fprintf('NaveGo: loading INS/GNSS integration for IMU2... \n')
     
     load nav2_e.mat
 end
 
-%% Printing traveled distance
+%% TRAVELED DISTANCE
 
 distance = gnss_distance (nav2_e.lat, nav2_e.lon);
 
 fprintf('NaveGo: distance traveled by the vehicle is %.2f meters or %.2f km. \n', distance, distance/1000)
 
-%% INS/GNSS INTERPOLATION
+%% INTERPOLATION OF INS/GNSS DATASET
 
 % INS/GNSS estimates and GNSS data are interpolated according to the
 % reference dataset.
@@ -373,17 +369,17 @@ fprintf('NaveGo: distance traveled by the vehicle is %.2f meters or %.2f km. \n'
 [nav2_i, ref_n2] = navego_interpolation (nav2_e, ref);
 [gnss_i, ref_g] = navego_interpolation (gnss, ref);
 
-%% Printing of RMSE from IMU1
+%% NAVIGATION RMSE FOR IMU1
 
 print_rmse (nav1_i, gnss_i, ref_n1, ref_g, 'ADIS16405 INS/GNSS');
 
-%% Printing of RMSE from IMU2
+%% NAVIGATION RMSE FOR IMU2
 
 print_rmse (nav2_i, gnss_i, ref_n2, ref_g, 'ADIS16488 INS/GNSS');
 
-%% Performance analysis of the Kalman filter
+%% PERFORMANCE ANAYSYS OF THE KALMAN FILTER
 
-fprintf('\nNaveGo: Kalman filter performance analysis...\n')
+fprintf('\nNaveGo: Kalman filter performance analysis for IMU 2...\n')
 
 kf_analysis (nav2_e)
 
