@@ -1,11 +1,11 @@
-function g_n = gravity(lat, h)
+function gn = gravity(lat, h)
 % gravity: calculates gravity vector in the navigation frame.
 %
-% INPUT:
+% INPUT
 %       lat, Mx1 latitude (radians).
 %         h, Mx1 altitude (m).
 %
-% OUTPUT:
+% OUTPUT
 %		g_n, Mx3 gravity vector in the nav-frame (m/s^2).
 %
 %   Copyright (C) 2014, Rodrigo Gonzalez, all rights reserved.
@@ -28,40 +28,43 @@ function g_n = gravity(lat, h)
 %
 % References:
 %
-%	Titterton, D.H. and Weston, J.L. (2004). Strapdown
-% Inertial Navigation Technology (2nd Ed.). Institution
-% of Engineering and Technology, USA. Eq. 3.89-3.91.
-%
-%	R. Gonzalez, J. Giribet, and H. Patiño. An approach to
-% benchmarking of loosely coupled low-cost navigation systems,
-% Mathematical and Computer Modelling of Dynamical Systems, vol. 21,
-% issue 3, pp. 272-287, 2015. Eq. 16.
+%   Paul D. Groves. Principles of GNSS, Inertial, and
+% Multisensor Integrated Navigation Systems. Second Edition.
+% Eq. 2.134 to 2.140, page 70.
 %
 % Version: 004
-% Date:    2019/01/09
+% Date:    2021/03/17
 % Author:  Rodrigo Gonzalez <rodralez@frm.utn.edu.ar>
 % URL:     https://github.com/rodralez/navego
 
-% Set gravity uncertainty
-% a = 9.81 * 0.1;
-% b = 9.81 * 0.1;
-% g_noise = (b-a).*rand(1) + a;
+M = max(size(lat));
 
-h = abs(h);
-sin1 = sin(lat);
-sin2 = sin(2.*lat);
+gn = zeros(M,3);
 
-g0 = 9.780318 * ( 1 + 5.3024e-03.*(sin1).^2 - 5.9e-06.*(sin2).^2 );
+%   RM, Nx1 meridian radius of curvature (North-South)(m).
+%   RN, Nx1 normal radius of curvature (East-West) (m).
 
-[RM,RN] = radius(lat);
+% Parameters
+RN = 6378137;               % WGS84 Equatorial radius in meters
+RM = 6356752.31425;         % WGS84 Polar radius in meters
+e = 0.0818191908425;        % WGS84 eccentricity
+f = 1 / 298.257223563;      % WGS84 flattening
+mu = 3.986004418E14;        % WGS84 Earth gravitational constant (m^3 s^-2)
+omega_ie_n = 7.292115E-5;   % Earth rotation rate (rad/s)
 
-Ro = sqrt(RN .* RM);
+% Calculate surface gravity using the Somigliana model, (2.134)
+sinl2 = sin(lat).^2;
+g_0 = 9.7803253359 * (1 + 0.001931853 .* sinl2) ./ sqrt(1 - e^2 .* sinl2);
 
-g = (g0 ./ (1 + (h ./ Ro)).^2);
+% Calculate north gravity using (2.140)
+gn(:,1) = -8.08E-9 .* h .* sin(2 .* lat);
 
-Z = zeros(size(lat));
+% East gravity is zero
+gn(:,2) = 0;
 
-g_n = [Z Z g];
+% Calculate down gravity using (2.139)
+gn(:,3) = g_0 .* (1 - (2 ./ RN) .* (1 + f .* (1 - 2 .* sinl2) +...
+    (omega_ie_n^2 .* RN^2 .* RM ./ mu)) .* h + (3 .* h.^2 ./ RN^2));
 
 end
 

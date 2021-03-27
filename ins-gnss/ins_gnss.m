@@ -25,11 +25,11 @@ function [nav_e] = ins_gnss(imu, gnss, att_mode)
 % ini_align_err: 1x3 initial attitude errors at t(1).
 %
 %	gnss, GNSS data structure.
-%         t: Mx1 time vector (seconds).
-%       lat: Mx1 latitude (radians).
-%       lon: Mx1 longitude (radians).
-%         h: Mx1 altitude (m).
-%       vel: Mx3 NED velocities (m/s).
+%         t: Gx1 time vector (seconds).
+%       lat: Gx1 latitude (radians).
+%       lon: Gx1 longitude (radians).
+%         h: Gx1 altitude (m).
+%       vel: Gx3 NED velocities (m/s).
 %       std: 1x3 position standard deviations (rad, rad, m).
 %      stdm: 1x3 position standard deviations (m, m, m).
 %      stdv: 1x3 velocity standard deviations (m/s).
@@ -46,7 +46,7 @@ function [nav_e] = ins_gnss(imu, gnss, att_mode)
 % OUTPUT
 %   nav_e, INS/GNSS navigation estimates data structure.
 %         t: Ix1 INS time vector (seconds).
-%        tg: Mx1 GNSS time vector, when Kalman filter was executed (seconds).
+%        tg: Gx1 GNSS time vector, when Kalman filter was executed (seconds).
 %      roll: Ix1 roll (radians).
 %     pitch: Ix1 pitch (radians).
 %       yaw: Ix1 yaw (radians).
@@ -54,17 +54,20 @@ function [nav_e] = ins_gnss(imu, gnss, att_mode)
 %       lat: Ix1 latitude (radians).
 %       lon: Ix1 longitude (radians).
 %         h: Ix1 altitude (m).
-%        xi: Mx15 Kalman filter a priori states.
-%        xp: Mx15 Kalman filter a posteriori states.
-%         z: Mx6  INS/GNSS measurements
-%         v: Mx6  Kalman filter innovations.
-%         b: Mx6 Kalman filter biases compensations, [gb_dyn ab_dyn].
-%         A: Mx225 Kalman filter transition-state matrices, one matrix per
+%        xi: Gx15 Kalman filter a priori states.
+%        xp: Gx15 Kalman filter a posteriori states.
+%         z: Gx6  INS/GNSS measurements
+%         v: Gx6  Kalman filter innovations.
+%         b: Gx6 Kalman filter biases compensations, [gb_dyn ab_dyn].
+%         A: Gx225 Kalman filter transition-state matrices, one matrix per
 %          row ordered by columns.
-%        Pp: Mx225 Kalman filter a posteriori covariance matrices, one
+%        Pp: Gx225 Kalman filter a posteriori covariance matrices, one
 %         matrix per row ordered by columns.
-%        Pi: Mx225 Kalman filter a priori covariance matrices, one matrix
+%        Pi: Gx225 Kalman filter a priori covariance matrices, one matrix
 %         per row ordered by columns.
+%         K: Gx90 Kalman gain matrices
+%         S: Gx36 Innovation matrices
+%        ob: Gx1 Number of observable states after each GNSS data arriving
 %
 %   Copyright (C) 2014, Rodrigo Gonzalez, all rights reserved.
 %
@@ -106,11 +109,16 @@ function [nav_e] = ins_gnss(imu, gnss, att_mode)
 
 if nargin < 3, att_mode  = 'quaternion'; end
 
-%% ZUPT detection algorithm
+%% ZUPT ALGORITHM
 
 zupt_flag = false;
 
 %% PREALLOCATION
+
+% Kalman filter dimensions
+n = 15; % number of states
+r = 6;  % number of sensors
+q = 12; % number of inputs
 
 % Constant matrices
 I = eye(3);
@@ -139,18 +147,19 @@ lon_e    = zeros (LI, 1);
 h_e      = zeros (LI, 1);
 
 % Preallocation of Kalman filter matrices for later performance analysis
-xi = zeros(LG, 15);        % Evolution of Kalman filter a priori states, xi
-xp = zeros(LG, 15);        % Evolution of Kalman filter a posteriori states, xp
-z = zeros(LG, 6);          % INS/GNSS measurements
-v = zeros(LG, 6);          % Kalman filter innovations
-b = zeros(LG, 6);          % Biases compensantions after Kalman filter correction
+xi = zeros(LG, n);      % Evolution of Kalman filter a priori states
+xp = zeros(LG, n);      % Evolution of Kalman filter a posteriori states
+z = zeros(LG, r);       % INS/GNSS measurements
+v = zeros(LG, r);       % Kalman filter innovations
 
-A  = zeros(LG, 225);       % Transition-state matrices, A
-Pi = zeros(LG, 225);       % A priori covariance matrices, Pi
-Pp = zeros(LG, 225);       % A posteriori covariance matrices, Pp
-K  = zeros(LG, 90);        % Kalman gain matrices, K
-S  = zeros(LG, 36);        % Innovation matrices, S
-ob = zeros(LG, 1);         % Number of observable states at each GNSS data arriving
+A  = zeros(LG, n^2);    % Transition-state matrices
+Pi = zeros(LG, n^2);    % A priori covariance matrices
+Pp = zeros(LG, n^2);    % A posteriori covariance matrices
+K  = zeros(LG, n*r);    % Kalman gain matrices
+S  = zeros(LG, r^2);    % Innovation matrices
+ob = zeros(LG, 1);      % Number of observable states at each GNSS data arriving
+
+b = zeros(LG, 6);       % Biases compensantions after Kalman filter correction
 
 %% INITIAL VALUES AT INS TIME = 1
 
@@ -161,8 +170,6 @@ yaw_e(1)   = imu.ini_align(3);
 DCMnb = euler2dcm([roll_e(1); pitch_e(1); yaw_e(1);]);
 DCMbn = DCMnb';
 qua   = euler2qua([roll_e(1) pitch_e(1) yaw_e(1)]);
-
-% DEC = 0.5 * 180/pi;             % Magnetic declination (radians)
 
 % Initial velocity
 vel_e(1,:) = gnss.vel(1,:);
@@ -176,7 +183,7 @@ h_e(1)   = gnss.h(1);
 gb_dyn = imu.gb_dyn';
 ab_dyn = imu.ab_dyn';
 
-%% Initialization of Kalman filter matrices
+%% INITIALIZATION OF KALMAN FILTER MATRICES
 
 % Prior estimates
 kf.xi = [ zeros(1,9), imu.gb_dyn, imu.ab_dyn ]';  % Error vector state
@@ -184,11 +191,12 @@ kf.Pi = diag([imu.ini_align_err, gnss.stdv, gnss.std, imu.gb_dyn, imu.ab_dyn].^2
 
 kf.Q  = diag([imu.arw, imu.vrw, imu.gb_psd, imu.ab_psd].^2);
 
-fb_corrected = imu.fb(1,:)' + ab_dyn - imu.ab_sta';
+fb_corrected = imu.fb(1,:)' - ab_dyn - imu.ab_sta';
 fn = DCMbn * fb_corrected;
+wn = DCMbn * imu.wb(1,:)' - gb_dyn - imu.gb_sta';
 
 % Vector to update matrix F
-upd = [gnss.vel(1,:) gnss.lat(1) gnss.h(1) fn'];
+upd = [gnss.vel(1,:) gnss.lat(1) gnss.h(1) fn' wn'];
 
 % Update matrices F and G
 [kf.F, kf.G] = F_update(upd, DCMbn, imu);
@@ -208,22 +216,18 @@ kf = kf_update( kf );
 % Initial matrices for Kalman filter performance analysis
 xi(1,:) = kf.xi';
 xp(1,:) = kf.xp';
-Pi(1,:) = reshape(kf.Pi, 1, 225);
-Pp(1,:) = reshape(kf.Pp, 1, 225);
-K(1,:)  = reshape(kf.K, 1, 90);
-S(1,:)  = reshape(kf.S, 1, 36);
-b(1,:)  = [imu.gb_dyn, imu.ab_dyn];
+Pi(1,:) = reshape(kf.Pi, 1, n^2);
+Pp(1,:) = reshape(kf.Pp, 1, n^2);
+K(1,:)  = reshape(kf.K, 1, n*r);
+S(1,:)  = reshape(kf.S, 1, r^2);
 v(1,:)  = kf.v';
 z(1,:)  = kf.z';
 b(1,:) = [gb_dyn', ab_dyn'];
 
-%% INS (IMU) time is the master clock
+%% INS (IMU) TIME IS THE MASTER CLOCK
 for i = 2:LI
     
     %% INERTIAL NAVIGATION SYSTEM (INS)
-    
-    % Update order according to Groves, Figure 5.8:
-    % Velocity > Position > Attitute
     
     % Print a dot on console every 10,000 INS executions
     if (mod(i,10000) == 0), fprintf('. ');  end
@@ -244,6 +248,8 @@ for i = 2:LI
     % deterministic static biases
     wb_corrected = imu.wb(i,:)' - gb_dyn - imu.gb_sta';
     fb_corrected = imu.fb(i,:)' - ab_dyn - imu.ab_sta';
+    fn = DCMbn * fb_corrected;
+    wn = DCMbn * wb_corrected;
     
     % Attitude update
     [qua, DCMbn, euler] = att_update(wb_corrected, DCMbn, qua, ...
@@ -252,8 +258,7 @@ for i = 2:LI
     pitch_e(i)= euler(2);
     yaw_e(i)  = euler(3);
 
-    % Velocity update
-    fn = DCMbn * fb_corrected;
+    % Velocity update    
     vel = vel_update(fn, vel_e(i-1,:), omega_ie_n, omega_en_n, gn_e(i,:)', dti);
     vel_e (i,:) = vel;
      
@@ -267,7 +272,7 @@ for i = 2:LI
     omega_ie_n = earth_rate(lat_e(i));
     omega_en_n = transport_rate(lat_e(i), vel_e(i,1), vel_e(i,2), h_e(i));
        
-    % ZUPT detection algorithm
+    %% ZUPT DETECTION ALGORITHM
     idz = floor( gnss.zupt_win / dti ); % Index to set ZUPT window time
     
     if ( i > idz )
@@ -321,11 +326,11 @@ for i = 2:LI
         % Radians-to-meters matrix
         Tpr = diag([(RM + h_e(i)), (RN + h_e(i)) * cos(lat_e(i)), -1]);
         
-        % Measurements for position in meters with lever arm correction
+        % Position innovations in meters with lever arm correction
         zp = Tpr * ([lat_e(i); lon_e(i); h_e(i);] - [gnss.lat(gdx); gnss.lon(gdx); gnss.h(gdx);]) ...
             + (DCMbn * gnss.larm);
         
-        % Measurements for velocity with lever arm correction
+        % Velocity innovations with lever arm correction
         zv = (vel_e(i,:) - gnss.vel(gdx,:) - ((omega_ie_n + omega_en_n) .* (DCMbn * gnss.larm))' ...
             + (DCMbn * skewm(wb_corrected) * gnss.larm )' )';
         
@@ -335,7 +340,7 @@ for i = 2:LI
         dtg = gnss.t(gdx) - gnss.t(gdx-1);
         
         % Vector to update matrix F
-        upd = [vel_e(i,:) lat_e(i) h_e(i) fn'];
+        upd = [vel_e(i,:) lat_e(i) h_e(i) fn' wn'];
         
         % Matrices F and G update
         [kf.F, kf.G] = F_update(upd, DCMbn, imu);
@@ -353,7 +358,7 @@ for i = 2:LI
         end
         
         % Execution of the extended Kalman filter
-        kf.xp(1:9) = 0.0;           % states 1:9 are forced to be zero (error-state approach)
+        kf.xp(1:9) = 0.0;           % states 1 to 9 are forced to be zero (error-state approach)
         kf = kalman(kf, dtg);
         
         %% OBSERVABILITY
@@ -365,7 +370,7 @@ for i = 2:LI
         
         % Quaternion corrections
         % Crassidis. Eq. 7.34 and A.174a.
-        antm = [0 qua(3) -qua(2); -qua(3) 0 qua(1); qua(2) -qua(1) 0];
+        antm = [0.0 qua(3) -qua(2); -qua(3) 0.0 qua(1); qua(2) -qua(1) 0.0];
         qua = qua + 0.5 .* [qua(4)*eye(3) + antm; -1.*[qua(1) qua(2) qua(3)]] * kf.xp(1:3);
         qua = qua / norm(qua);       % Brute-force normalization
         
@@ -401,20 +406,20 @@ for i = 2:LI
         xi(gdx,:) = kf.xi';
         xp(gdx,:) = kf.xp';
         b(gdx,:) = [gb_dyn', ab_dyn'];
-        A(gdx,:)  = reshape(kf.A, 1, 225);
-        Pi(gdx,:) = reshape(kf.Pi, 1, 225);
-        Pp(gdx,:) = reshape(kf.Pp, 1, 225);
+        A(gdx,:)  = reshape(kf.A,  1, n^2);
+        Pi(gdx,:) = reshape(kf.Pi, 1, n^2);
+        Pp(gdx,:) = reshape(kf.Pp, 1, n^2);
         
         if(zupt_flag == false)
-            z(gdx,:)  = kf.z';
             v(gdx,:)  = kf.v';
-            K(gdx,:)  = reshape(kf.K, 1, 90);
-            S(gdx,:)  = reshape(kf.S, 1, 36);
+            z(gdx,:)  = kf.z';
+            K(gdx,:)  = reshape(kf.K, 1, n*r);
+            S(gdx,:)  = reshape(kf.S, 1, r^2);
         else
             zupt_flag = false;
             z(gdx,:)  = [ kf.z' 0 0 0 ]';
             v(gdx,:)  = [ kf.v' 0 0 0 ]';
-            K(gdx,1:45)  = reshape(kf.K, 1, 45);
+            K(gdx,1:45) = reshape(kf.K, 1, n*3);
             S(gdx,1:9)  = reshape(kf.S, 1, 9);
         end
     end
