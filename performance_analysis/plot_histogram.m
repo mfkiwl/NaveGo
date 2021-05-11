@@ -36,7 +36,7 @@ function plot_histogram (samples, pd, x_label, x_title)
 % Version: 004
 % Date:    2021/03/02
 % Author:  Rodrigo Gonzalez <rodralez@frm.utn.edu.ar>
-% URL:     https://github.com/rodralez/navego
+% URL:     https://github.com/rodralez/navego`
 
 N = length(samples);
 
@@ -78,7 +78,7 @@ orange_new = [0.8500 0.3250 0.0980];
 
 figure
 
-% Plot histogram from data
+% Plot histogram from dataquiq
 histogram(samples, bins, 'Normalization', 'pdf', 'FaceColor', [.9 .9 .9]);
 hold on
 
